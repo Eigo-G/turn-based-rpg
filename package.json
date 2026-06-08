@@ -1,0 +1,25 @@
+{
+  "name": "turn-based-rpg",
+  "version": "1.0.0",
+  "description": "\"A turn-based RPG battle game built with Phaser.js\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eigo-G/turn-based-rpg.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Eigo-G/turn-based-rpg/issues"
+  },
+  "homepage": "https://github.com/Eigo-G/turn-based-rpg#readme",
+  "dependencies": {
+    "phaser": "^4.1.0",
+    "vite": "^8.0.16"
+  }
+}
