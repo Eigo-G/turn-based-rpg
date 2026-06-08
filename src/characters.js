@@ -51,9 +51,9 @@ function calculateDamage(attacker, defender) {
     
     return damage;
 }
-calculateDamage(playerTeam[0], enemyTeam[0]);
-calculateDamage(playerTeam[1], enemyTeam[2]);
-calculateDamage(playerTeam[2], enemyTeam[1]);
+// calculateDamage(playerTeam[0], enemyTeam[0]);
+// calculateDamage(playerTeam[1], enemyTeam[2]);
+// calculateDamage(playerTeam[2], enemyTeam[1]);
 
 function attack(attacker, defender) {
     const damage = calculateDamage(attacker, defender);
@@ -68,6 +68,8 @@ function attack(attacker, defender) {
     }
 }
 
-attack(playerTeam[2], enemyTeam[1]);
-attack(playerTeam[2], enemyTeam[1]);
-attack(playerTeam[2], enemyTeam[1]);
+// attack(playerTeam[2], enemyTeam[1]);
+// attack(playerTeam[2], enemyTeam[1]);
+// attack(playerTeam[2], enemyTeam[1]);
+
+export { playerTeam, enemyTeam };
