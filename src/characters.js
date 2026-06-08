@@ -72,4 +72,4 @@ function attack(attacker, defender) {
 // attack(playerTeam[2], enemyTeam[1]);
 // attack(playerTeam[2], enemyTeam[1]);
 
-export { playerTeam, enemyTeam };
+export { playerTeam, enemyTeam, getTurnOrder, attack };
