@@ -26,3 +26,48 @@ const turnOrder = getTurnOrder(playerTeam, enemyTeam);
 turnOrder.forEach((character, index) => {
     console.log(`Turn ${index + 1}: ${character.name} (Speed: ${character.speed})`);
 });
+
+function calculateDamage(attacker, defender) {
+    let damage = attacker.attack;
+    
+    const elementChart = {
+        fire:  { strong: "earth", weak: "wind" },
+        wind:  { strong: "fire",  weak: "earth" },
+        earth: { strong: "wind",  weak: "fire" },
+        dark:  { strong: "wind",  weak: "earth" }
+    };
+
+    const attackerElement = elementChart[attacker.element];
+    
+    if (attackerElement.strong === defender.element) {
+        damage = Math.round(damage * 1.5);
+        console.log(`${attacker.name} hits ${defender.name} for ${damage} (STRONG!)`);
+    } else if (attackerElement.weak === defender.element) {
+        damage = Math.round(damage * 0.75);
+        console.log(`${attacker.name} hits ${defender.name} for ${damage} (WEAK!)`);
+    } else {
+        console.log(`${attacker.name} hits ${defender.name} for ${damage}`);
+    }
+    
+    return damage;
+}
+calculateDamage(playerTeam[0], enemyTeam[0]);
+calculateDamage(playerTeam[1], enemyTeam[2]);
+calculateDamage(playerTeam[2], enemyTeam[1]);
+
+function attack(attacker, defender) {
+    const damage = calculateDamage(attacker, defender);
+    defender.hp -= damage;
+    
+    if (defender.hp < 0) defender.hp = 0;
+    
+    console.log(`${defender.name} HP: ${defender.hp}/${defender.maxHp}`);
+    
+    if (defender.hp === 0) {
+        console.log(`${defender.name} has been defeated!`);
+    }
+}
+
+attack(playerTeam[2], enemyTeam[1]);
+attack(playerTeam[2], enemyTeam[1]);
+attack(playerTeam[2], enemyTeam[1]);
