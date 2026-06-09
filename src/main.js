@@ -6,6 +6,7 @@ let turnOrder = [];
 let selectedAttacker = null;
 let phase = 'select-attacker';
 let scene = null;
+let playerTexts = [];
 
 const config = {
     type: Phaser.AUTO,
@@ -22,7 +23,7 @@ const game = new Phaser.Game(config);
 function create() {
     scene = this;
     // Display player team on the left
-   const playerTexts = [];
+    playerTexts = [];
 playerTeam.forEach((character, index) => {
     const text = this.add.text(100, 150 + (index * 80),
         `${character.name}\nHP: ${character.hp}/${character.maxHp}`, {
@@ -99,26 +100,47 @@ function updateTurnText(turnText) {
         turnText.setFill('#ff4444');
     }
 }
+function advanceTurn(turnText) {
+    currentTurnIndex = (currentTurnIndex + 1) % turnOrder.length;
+    
+    const current = turnOrder[currentTurnIndex];
+    
+    // Skip dead characters regardless of team
+    if (current.hp <= 0) {
+        advanceTurn(turnText);
+        return;
+    }
+    
+    updateTurnText(turnText);
+    
+    const isPlayer = playerTeam.includes(current);
+    if (!isPlayer) {
+        enemyTurn(scene, turnText);
+    }
+}
 function enemyTurn(scene, turnText) {
     const attacker = turnOrder[currentTurnIndex];
     
+    if (attacker.hp <= 0) {
+    currentTurnIndex = (currentTurnIndex + 1) % turnOrder.length;
+    enemyTurn(scene, turnText);
+    return;
+}
     // Enemy picks a random living player character
     const livingPlayers = playerTeam.filter(c => c.hp > 0);
     const target = livingPlayers[Math.floor(Math.random() * livingPlayers.length)];
     
     attack(attacker, target);
+
+    const targetIndex = playerTeam.indexOf(target);
+playerTexts[targetIndex].setText(
+    `${target.name}\nHP: ${target.hp}/${target.maxHp}`
+);
     
     // Wait 1 second then move to next turn
     scene.time.delayedCall(1000, () => {
-        currentTurnIndex = (currentTurnIndex + 1) % turnOrder.length;
-        updateTurnText(turnText);
-        
-        const next = turnOrder[currentTurnIndex];
-        const isPlayer = playerTeam.includes(next);
-        
-        if (!isPlayer) {
-            enemyTurn(scene, turnText);
-        }
+    advanceTurn(turnText);
+
     });
 }
 function onPlayerClick(character, text) {
@@ -150,11 +172,6 @@ function onEnemyClick(character, enemyText, enemyTexts, playerTexts, turnText) {
     playerTexts.forEach(t => t.setFill('#00ff88'));
     
     // Advance turn
-    currentTurnIndex = (currentTurnIndex + 1) % turnOrder.length;
-    updateTurnText(turnText);
-    
-    const next = turnOrder[currentTurnIndex];
-    if (!playerTeam.includes(next)) {
-        enemyTurn(scene, turnText);
+    advanceTurn(turnText);
     }
-}
+
